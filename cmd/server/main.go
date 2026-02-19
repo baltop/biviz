@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"biviz/internal/ai"
 	"biviz/internal/db"
 	"biviz/internal/handlers"
 	"biviz/internal/middleware"
@@ -23,6 +24,9 @@ func main() {
 	if err := db.Migrate(); err != nil {
 		log.Fatal(err)
 	}
+
+	ai.Init()
+	defer ai.Close()
 
 	// 페이지별 독립 템플릿 로드
 	handlers.PageTemplates = map[string]*template.Template{
@@ -54,6 +58,7 @@ func main() {
 	mux.HandleFunc("POST /api/logout", handlers.HandleLogout)
 
 	mux.Handle("GET /dashboard", middleware.AuthMiddleware(http.HandlerFunc(handlers.ShowDashboard)))
+	mux.Handle("POST /api/ai/chat", middleware.AuthMiddleware(http.HandlerFunc(handlers.HandleAIChat)))
 
 	log.Printf("🚀 BiViz 서버 시작: http://localhost:%s", port)
 	if err := http.ListenAndServe(":"+port, mux); err != nil {

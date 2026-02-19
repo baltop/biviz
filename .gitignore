@@ -1,4 +1,5 @@
 biviz
+server
 *.exe
 .env
 coverage.out

@@ -24,6 +24,7 @@
 | POST | `/api/login` | ✗ | 로그인 처리 |
 | POST | `/api/signup` | ✗ | 회원가입 처리 |
 | POST | `/api/logout` | ✗ | 로그아웃 (세션 삭제) |
+| POST | `/api/ai/chat` | ✓ | AI 채팅 (SSE 스트리밍) |
 
 ## 요청/응답 상세
 
@@ -56,6 +57,36 @@ email=user@example.com&password=12345678
 ### POST /api/logout
 
 **동작**: 세션 삭제 + 쿠키 만료 + `/login`으로 리다이렉트
+
+### POST /api/ai/chat
+
+**요청** (JSON):
+```json
+{
+  "message": "매출 데이터를 분석해줘",
+  "history": [
+    {"role": "user", "content": "이전 질문"},
+    {"role": "assistant", "content": "이전 답변"}
+  ]
+}
+```
+
+**응답** (SSE text/event-stream):
+```
+data: {"text":"안녕"}
+
+data: {"text":"하세요"}
+
+data: [DONE]
+```
+
+**에러 응답**:
+- 401: 미인증 `{"error":"Unauthorized"}`
+- 503: AI 미설정 `{"error":"AI service is not configured"}`
+- 400: 잘못된 요청 `{"error":"Invalid request body"}`
+
+**모델**: Claude claude-sonnet-4-20250514 (Anthropic)
+**환경변수**: `ANTHROPIC_API_KEY` 필요
 
 ## HTMX 통합 패턴
 
