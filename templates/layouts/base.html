@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{block "title" .}}BiViz{{end}}</title>
+    <link rel="stylesheet" href="/static/css/app.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        // 페이지 로드 전 테마 적용 (깜빡임 방지)
+        (function(){
+            var t = localStorage.getItem('theme') || 'dark';
+            document.documentElement.classList.add(t);
+        })();
+    </script>
+</head>
+<body style="font-family:'Inter',system-ui,sans-serif; min-height:100vh; margin:0;">
+    {{block "content" .}}{{end}}
+    
+    <div id="htmx-indicator" class="htmx-indicator">
+        <div class="loading-bar"></div>
+    </div>
+
+    <script src="/static/js/htmx.min.js"></script>
+    <script src="/static/js/alpine.min.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

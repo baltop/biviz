@@ -1,0 +1,82 @@
+{{define "title"}}BiViz — 회원가입{{end}}
+
+{{define "content"}}
+<div class="min-h-screen flex items-center justify-center px-4 page-bg">
+    <div class="w-full max-w-md">
+        <div class="text-center mb-6">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 mb-6 shadow-indigo-500/25 shadow-lg">
+                <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                </svg>
+            </div>
+            <h1 class="text-3xl font-bold tracking-tight">BiViz</h1>
+            <p class="auth-sub mt-2">새 계정을 만들어보세요</p>
+        </div>
+
+        <div class="auth-card rounded-2xl p-8 shadow-2xl"
+             x-data="{ loading: false, password: '', confirm: '' }">
+            <h2 class="text-xl font-semibold mb-6">회원가입</h2>
+
+            <div id="auth-error">
+                {{if .Error}}
+                <div class="flex items-center gap-3 p-4 mb-4 bg-red-500/10 rounded-xl text-red-400 text-sm" style="border:1px solid rgba(239,68,68,0.2)">
+                    <span>{{.Error}}</span>
+                </div>
+                {{end}}
+            </div>
+
+            <form hx-post="/api/signup" hx-target="#auth-error" hx-swap="innerHTML"
+                  @htmx:before-request="loading = true" @htmx:after-request="loading = false"
+                  class="space-y-5">
+                <div>
+                    <label for="email" class="block text-sm font-medium auth-label mb-2">이메일</label>
+                    <input type="email" id="email" name="email" required placeholder="name@example.com"
+                           class="auth-input w-full px-4 py-3 rounded-xl transition-all duration-200" style="outline:none">
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium auth-label mb-2">비밀번호</label>
+                    <input type="password" id="password" name="password" required x-model="password"
+                           placeholder="8자 이상" minlength="8"
+                           class="auth-input w-full px-4 py-3 rounded-xl transition-all duration-200" style="outline:none">
+                    <div class="mt-2 flex gap-1" x-show="password.length > 0" x-cloak>
+                        <div class="h-1 flex-1 rounded-full transition-colors duration-300"
+                             :style="'background:' + (password.length >= 8 ? '#6366f1' : '#374151')"></div>
+                        <div class="h-1 flex-1 rounded-full transition-colors duration-300"
+                             :style="'background:' + (password.length >= 10 ? '#6366f1' : '#374151')"></div>
+                        <div class="h-1 flex-1 rounded-full transition-colors duration-300"
+                             :style="'background:' + (password.length >= 12 ? '#6366f1' : '#374151')"></div>
+                    </div>
+                </div>
+                <div>
+                    <label for="confirm_password" class="block text-sm font-medium auth-label mb-2">비밀번호 확인</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required x-model="confirm"
+                           placeholder="비밀번호 재입력"
+                           class="auth-input w-full px-4 py-3 rounded-xl transition-all duration-200" style="outline:none">
+                    <p x-show="confirm.length > 0 && confirm !== password" x-cloak
+                       class="text-red-400 text-xs mt-1">비밀번호가 일치하지 않습니다</p>
+                </div>
+                <button type="submit" :disabled="loading || password.length < 8 || confirm !== password"
+                        class="w-full py-3 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-xl
+                               hover:from-indigo-500 hover:to-purple-500 disabled:opacity-50 disabled:cursor-not-allowed
+                               transition-all duration-200 shadow-lg shadow-indigo-500/25"
+                        style="border:none;cursor:pointer">
+                    <span x-show="!loading">가입하기</span>
+                    <span x-show="loading" x-cloak class="flex items-center justify-center gap-2">
+                        <svg class="animate-spin w-5 h-5" viewBox="0 0 24 24" fill="none">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                        </svg>
+                        가입 중...
+                    </span>
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <span class="auth-sub text-sm">이미 계정이 있으신가요?</span>
+                <a href="/login" class="auth-link text-sm font-medium ml-1">로그인</a>
+            </div>
+        </div>
+        <p class="text-center auth-footer text-xs mt-8">© 2026 BiViz. 데이터 시각화 솔루션</p>
+    </div>
+</div>
+{{end}}
