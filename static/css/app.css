@@ -150,6 +150,9 @@ h1, h2, h3, h4, h5 { font-family: var(--font-heading); letter-spacing: -0.02em; 
 .light .auth-link:hover { color:#3b82f6; }
 .light .auth-footer { color:#d4d4d8; }
 
+/* -- 인증 버튼 -- */
+.auth-btn:hover { filter:brightness(1.1); }
+
 /* ============================================
    AI Chat Widget CSS Variables
    ============================================ */

@@ -4,3 +4,4 @@ server
 .env
 coverage.out
 coverage.html
+uploads/

@@ -42,6 +42,10 @@ func main() {
 			"templates/layouts/base.html",
 			"templates/pages/dashboard.html",
 		)),
+		"interview-upload.html": template.Must(template.ParseFiles(
+			"templates/layouts/base.html",
+			"templates/pages/interview-upload.html",
+		)),
 	}
 
 	mux := http.NewServeMux()
@@ -58,6 +62,8 @@ func main() {
 	mux.HandleFunc("POST /api/logout", handlers.HandleLogout)
 
 	mux.Handle("GET /dashboard", middleware.AuthMiddleware(http.HandlerFunc(handlers.ShowDashboard)))
+	mux.Handle("GET /interview-upload", middleware.AuthMiddleware(http.HandlerFunc(handlers.ShowInterviewUpload)))
+	mux.Handle("POST /api/interview/upload", middleware.AuthMiddleware(http.HandlerFunc(handlers.HandleInterviewUpload)))
 	mux.Handle("POST /api/ai/chat", middleware.AuthMiddleware(http.HandlerFunc(handlers.HandleAIChat)))
 
 	log.Printf("🚀 BiViz 서버 시작: http://localhost:%s", port)
