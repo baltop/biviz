@@ -10,6 +10,7 @@
 | UI 반응성 | Alpine.js | 3.14 | 클라이언트 사이드 상태 관리 |
 | DB | PostgreSQL | 16 | 데이터 저장 |
 | DB 드라이버 | pgx/v5 | 5.8 | 커넥션 풀, 쿼리 실행 |
+| AI | Anthropic Claude | claude-sonnet-4-20250514 | AI 채팅 어시스턴트 |
 | 인증 | bcrypt | — | 비밀번호 해싱 |
 
 ## 아키텍처 원칙
@@ -40,8 +41,10 @@ works/biviz/
 │   ├── db/
 │   │   └── db.go                # PostgreSQL 연결, 마이그레이션
 │   ├── handlers/
+│   │   ├── ai.go                # AI 채팅 핸들러 (SSE 스트리밍)
 │   │   ├── auth.go              # 인증 관련 핸들러
-│   │   └── dashboard.go         # 대시보드 핸들러
+│   │   ├── dashboard.go         # 대시보드 핸들러
+│   │   └── interview.go         # 인터뷰 업로드 핸들러
 │   ├── middleware/
 │   │   └── session.go           # 세션 관리, 인증 미들웨어
 │   └── models/
@@ -59,7 +62,8 @@ works/biviz/
 │   ├── pages/
 │   │   ├── login.html           # 로그인 페이지
 │   │   ├── signup.html          # 회원가입 페이지
-│   │   └── dashboard.html       # 대시보드 페이지
+│   │   ├── dashboard.html       # 대시보드 페이지
+│   │   └── interview-upload.html # 인터뷰 업로드 페이지
 │   └── components/
 │       └── error-message.html   # 에러 메시지 컴포넌트
 ├── docs/                        # 개발 문서 (현재 디렉토리)

@@ -2,6 +2,24 @@
 
 ## 2026-02-19
 
+### 인터뷰 업로드 기능 추가
+
+- `/interview-upload` 페이지 추가 (드래그 & 드롭 + 파일 선택)
+- `POST /api/interview/upload` 엔드포인트 (multipart/form-data, 최대 50MB)
+- 유저별 격리된 저장 경로: `uploads/interviews/{userID}/`
+- 업로드된 파일 목록 표시 (이름, 크기, 업로드 시간)
+- 지원 형식: TXT, CSV, PDF, DOC, DOCX, MP3, MP4, WAV, M4A, WEBM
+- 대시보드 사이드바에 메뉴 연결
+
+#### 변경 파일
+
+| 파일 | 변경 |
+|---|---|
+| `internal/handlers/interview.go` | 인터뷰 업로드 핸들러 (신규) |
+| `templates/pages/interview-upload.html` | 업로드 페이지 UI (신규) |
+| `cmd/server/main.go` | 라우트 등록 + 템플릿 로드 |
+| `templates/pages/dashboard.html` | 사이드바 메뉴 추가 |
+
 ### AI 채팅 기능 추가
 
 - 대시보드에 AI 채팅 위젯 추가 (플로팅 버튼 → 사이드 패널)

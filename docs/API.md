@@ -16,6 +16,7 @@
 | GET | `/login` | ✗ | 로그인 페이지 (로그인 상태면 `/dashboard`로) |
 | GET | `/signup` | ✗ | 회원가입 페이지 |
 | GET | `/dashboard` | ✓ | 대시보드 (AuthMiddleware) |
+| GET | `/interview-upload` | ✓ | 인터뷰 업로드 페이지 |
 
 ### API
 
@@ -25,6 +26,7 @@
 | POST | `/api/signup` | ✗ | 회원가입 처리 |
 | POST | `/api/logout` | ✗ | 로그아웃 (세션 삭제) |
 | POST | `/api/ai/chat` | ✓ | AI 채팅 (SSE 스트리밍) |
+| POST | `/api/interview/upload` | ✓ | 인터뷰 파일 업로드 (multipart/form-data) |
 
 ## 요청/응답 상세
 
@@ -87,6 +89,27 @@ data: [DONE]
 
 **모델**: Claude claude-sonnet-4-20250514 (Anthropic)
 **환경변수**: `ANTHROPIC_API_KEY` 필요
+
+### GET /interview-upload
+
+인터뷰 업로드 페이지를 렌더링합니다. 업로드된 파일 목록도 함께 표시됩니다.
+
+### POST /api/interview/upload
+
+**요청** (multipart/form-data):
+```
+files: (바이너리 파일, 복수 가능)
+```
+
+**지원 형식**: TXT, CSV, PDF, DOC, DOCX, MP3, MP4, WAV, M4A, WEBM
+**최대 크기**: 50MB
+
+**성공 응답**: `200 OK`
+**에러 응답**:
+- 401: 미인증 `"인증이 필요합니다"`
+- 400: 파일 없음 `"파일을 선택해주세요"` / 크기 초과 `"파일이 너무 큽니다 (최대 50MB)"`
+
+**저장 경로**: `uploads/interviews/{userID}/{filename}`
 
 ## HTMX 통합 패턴
 
